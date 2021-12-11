@@ -1,7 +1,5 @@
 i = 0
 n = 0
-X = 0
-Y = 0
 calc = []
 gamma = ""
 epsilon = ""
