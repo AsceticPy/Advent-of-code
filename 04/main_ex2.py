@@ -1,6 +1,6 @@
 from typing import Optional
 """Reading information inspired by the solution of @hurryabit, 
-	thank's to you i learn so much by reading your code
+	thank's to you i learn so much by reading your code, the best things i learn is zip(*list) !
 	Github : https://github.com/hurryabit/
 	His solution : https://github.com/hurryabit/adventofcode-2021/blob/main/python/day04a.py """
 
