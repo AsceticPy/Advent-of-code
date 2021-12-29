@@ -27,10 +27,8 @@ def solve_line(numbers: str):
       
       for six in six_long:
          if one[0][0] in six:
-            print('one')
             one_flag += 1
          if one[0][1] in six:
-            print('two')
             two_flag += 1
 
       if one_flag < two_flag:
@@ -86,9 +84,6 @@ def unique_digit(model_digits, list_digits, input_string) -> str:
       for n in range(len(list_digits)):
          if inpt_to_find == sorted(model_digits[list_digits[n]]):
             result.append(list_digits[n])
-   if len(result) == 3:
-      print(result)
-      print(input_string)
    return result
 
 list_digits = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
