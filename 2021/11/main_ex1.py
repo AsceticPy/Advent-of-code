@@ -1,5 +1,6 @@
 from dataclasses import dataclass
-
+import math
+from prompt_toolkit.key_binding.bindings.named_commands import self_insert
 
 flash_tot: int = 0
 lines: int = []
@@ -23,34 +24,33 @@ class Octopus:
 
 
 	def Flash(self):
-		if not self.flash:
-			global flash_tot
-			flash_tot += 1
-			self._value = 0
-			self.flash = True
-			positions = [[self.x - 1, self.y], [self.x + 1, self.y], [self.x , self.y - 1], [self.x, self.y + 1]
-							, [self.x - 1, self.y - 1], [self.x + 1, self.y - 1], [self.x + 1, self.y + 1], [self.x - 1, self.y + 1]]
-
-			for position in positions:
-				if is_valid(position[0], position[1]):
-					octopus[position[0]][position[1]].value += 1
-					if octopus[position[0]][position[1]].value > 9:
-						octopus[position[0]][position[1]].Flash()
-
+		global flash_tot
+		flash_tot += 1
+		self._value = 0
+		self.flash = True
+		positions = [
+					[self.x - 1, self.y], [self.x + 1, self.y], 
+					[self.x , self.y - 1], [self.x, self.y + 1], 
+					[self.x - 1, self.y - 1], [self.x + 1, self.y - 1], 
+					[self.x + 1, self.y + 1], [self.x - 1, self.y + 1]
+					]
+		for position in positions:
+			if is_valid(position[0], position[1]):
+				octopus[position[1]][position[0]].value += 1
 
 def is_valid(x: int, y: int) -> bool:
-		return (0 <= x < len(octopus)) and (0 <= y < len(octopus[0]))
+		return (0 <= x < len(octopus[0])) and (0 <= y < len(octopus))
 
 def step():
 	for n in range(len(octopus)):
 		for i in range(len(octopus[0])):
 			octopus[i][n].value += 1
 
-
-	for n in range(len(octopus)):
-		for i in range(len(octopus[0])):
-			if octopus[i][n].value > 9:
-				octopus[i][n].Flash()
+	while any(True for i in range(len(octopus)) for n in range(len(octopus[i])) if octopus[i][n].value > 9):
+		for n in range(len(octopus)):
+			for i in range(len(octopus[0])):
+				if octopus[i][n].value > 9 and not octopus[i][n].flash:
+					octopus[i][n].Flash()
 
 	for n in range(len(octopus)):
 		for i in range(len(octopus[0])):
@@ -59,18 +59,16 @@ def step():
 
 octopus:Octopus = []
 
-with open('example.txt', 'r') as data_file:
+with open('data.txt', 'r') as data_file:
 	lines = [line.strip() for line in data_file]
 	for i in range(len(lines)):
 		octopus.append([])
 		for n in range(len(lines[i])):
 			octopus[i].append(Octopus(n, i, lines[i][n], False))
 
-for i in range(10):
+
+for i in range(100):
 	step()
 
-for n in range(len(octopus)):
-	for i in range(len(octopus[0])):
-		print(octopus[n][i].value, end=',')
-	print("\n")
 print(flash_tot)
+	
