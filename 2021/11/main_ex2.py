@@ -40,8 +40,10 @@ class Octopus:
 def is_valid(x: int, y: int) -> bool:
 		return (0 <= x < len(octopus[0])) and (0 <= y < len(octopus))
 
+def octoSync() -> bool:
+	return all([octopus[i][n].flash for i in range(len(octopus)) for n in range(len(octopus[0]))])
 
-def step():
+def step() -> bool:
 	for n in range(len(octopus)):
 		for i in range(len(octopus[0])):
 			octopus[i][n].value += 1
@@ -52,11 +54,14 @@ def step():
 				if octopus[i][n].value > 9 and not octopus[i][n].flash:
 					octopus[i][n].Flash()
 	
+	if octoSync():
+		return True
+	
 	for n in range(len(octopus)):
 		for i in range(len(octopus[0])):
 			octopus[i][n].flash = False
 
-
+	return False
 octopus:Octopus = []
 
 with open('data.txt', 'r') as data_file:
@@ -66,8 +71,11 @@ with open('data.txt', 'r') as data_file:
 		for n in range(len(lines[i])):
 			octopus[i].append(Octopus(n, i, lines[i][n], False))
 
-for n in range(100):
-	step()
+countStep = 0
+while True:
+	countStep += 1
+	if step():
+		print(countStep)
+		break
 
-print(flash_tot)
 	
