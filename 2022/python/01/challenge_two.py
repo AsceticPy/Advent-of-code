@@ -2,7 +2,7 @@ with open('data.txt', 'r') as file:
     elf= [0]
     elf_num: int = 0
     elf_cal = 0
-    for count, line in enumerate(file):
+    for line in file:
         if line == "\n":
             elf[elf_num] = elf_cal
             elf_cal = 0
